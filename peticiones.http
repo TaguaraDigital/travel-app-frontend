@@ -1,0 +1,19 @@
+### Creacion de un producto
+POST http://localhost:3000/api/login
+Content-Type: application/json
+
+{
+   "title": "pizza 1",
+   "img": "/assets/img/pizza.png",
+   "desc": "descripcopn pizza 1",
+   "prices": [10, 15, 20 ],
+   "extraOptions": [
+      {
+         "text": "Extra 1", "price": 5,
+      },
+      {
+         "text": "Extra 2", "price": 10   ,
+      },
+
+   ]
+}

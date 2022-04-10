@@ -1,0 +1,48 @@
+:root {
+  --mainClr: #d1411e;
+  --secondClr: #d1d1d1;
+  --txtClrLight: #eaeaea;
+  --txtClrDark: #d1411e;
+  --whiteClr: #f1f1f1;
+  --blackClr: #323332;
+  --grayLightClr: #cacaca;
+  --grayClr: #727272;
+  --goldClr: #b7903c;
+  --headerHeight: 100px;
+  --footerHeight: 100px;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.not-found {
+  text-align: center;
+
+  p {
+    margin-top: 2rem;
+  }
+
+  a {
+    color: var(--mainAltClr);
+    text-decoration: underline;
+  }
+}
