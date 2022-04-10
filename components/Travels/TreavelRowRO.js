@@ -4,8 +4,11 @@ import { FaPencilAlt, FaTrash } from "react-icons/fa";
 const TreavelRowRO = ({ travel, handleUpdate, handleDelete }) => {
   return (
     <tr className={styles.tableRow}>
+      <td className={styles.tableCell} data-col-title="id">
+        {travel.id}
+      </td>
       <td className={styles.tableCell} data-col-title="Codigo">
-        {travel.codigo}
+        {travel.cod_viaje}
       </td>
       <td className={styles.tableCell} data-col-title="Origen">
         {travel.origen}
@@ -37,7 +40,7 @@ const TreavelRowRO = ({ travel, handleUpdate, handleDelete }) => {
           <button
             className={styles.tableAccion__delete}
             type="button"
-            onClick={() => handleDelete(travel.codigo)}
+            onClick={() => handleDelete(travel.id)}
           >
             <FaTrash />
           </button>

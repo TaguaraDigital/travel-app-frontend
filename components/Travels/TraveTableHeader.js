@@ -4,6 +4,7 @@ const TraveTableHeader = () => {
   return (
     <thead className={styles.tableHead}>
       <tr className={styles.tableRow}>
+        <th> Identificador </th>
         <th> Codigo </th>
         <th> Origen </th>
         <th> Destino </th>

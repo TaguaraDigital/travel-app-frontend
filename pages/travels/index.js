@@ -5,17 +5,18 @@ import Link from "next/link";
 import { FaPlus, FaPencilAlt, FaTrash } from "react-icons/fa";
 
 import styles from "./Travel.module.scss";
-import { travelData } from "../../utils/travellersData";
 import TreavelRowRO from "../../components/Travels/TreavelRowRO";
 import TreavelRowUpdate from "../../components/Travels/TreavelRowUpdate";
 import TraveTableHeader from "../../components/Travels/TraveTableHeader";
-// import { getPosts } from "../services";
+import TravelFinder from "../../services/apis/travelsFinder";
 
-const Travels = () => {
+const Travels = ({ travelData }) => {
   const [travels, setTravels] = useState(travelData);
+  const [editTravelId, setEditTravelId] = useState(null);
 
   const [addTravelData, setAddTravelData] = useState({
-    codigo: "",
+    id: "",
+    cod_viaje: "",
     origen: "",
     destino: "",
     nro_plazas: "",
@@ -23,15 +24,13 @@ const Travels = () => {
   });
 
   const [editTravelData, setEditTravelData] = useState({
-    codigo: "",
+    id: "",
+    cod_viaje: "",
     origen: "",
     destino: "",
     nro_plazas: "",
     precio: "",
   });
-
-  const [isUpdate, setIsUpdate] = useState(false);
-  const [editTravelId, setEditTravelId] = useState(null);
 
   const handleAddChange = (e) => {
     e.preventDefault();
@@ -55,48 +54,108 @@ const Travels = () => {
     setEditTravelData(newFormData);
   };
 
+  const InsertTravel = async (travel) => {
+    try {
+      const response = await TravelFinder.create(travel);
+      if (response.success) {
+        console.log(response);
+        const newTravel = {
+          id: response.data.id,
+          cod_viaje: addTravelData.cod_viaje,
+          origen: addTravelData.origen,
+          destino: addTravelData.destino,
+          nro_plazas: addTravelData.nro_plazas,
+          precio: addTravelData.precio,
+        };
+
+        const newTravels = [...travels, newTravel];
+        setTravels(newTravels);
+      } else {
+        alert("error" + response.message);
+        console.log("error", response.message);
+      }
+    } catch (err) {}
+  };
+
+  const EditTravel = async (travel) => {
+    try {
+      const response = await TravelFinder.update(travel);
+      if (response.success) {
+        const editedTravel = {
+          id: editTravelData.id,
+          cod_viaje: editTravelData.cod_viaje,
+          origen: editTravelData.origen,
+          destino: editTravelData.destino,
+          nro_plazas: editTravelData.nro_plazas,
+          precio: editTravelData.precio,
+        };
+
+        const newTravels = [...travels];
+
+        const index = travels.findIndex((travel) => travel.id === editTravelId);
+
+        newTravels[index] = editedTravel;
+
+        setTravels(newTravels);
+        setEditTravelId(null);
+      } else {
+        alert("error" + response.message);
+        console.log("error", response.message);
+      }
+    } catch (err) {}
+  };
+
+  const DeleteTravel = async (travelid) => {
+    try {
+      const response = await TravelFinder.delete(travelid);
+      if (response.success) {
+        const newTravels = [...travels];
+
+        const index = travels.findIndex((travel) => travel.id === travelid);
+        newTravels.splice(index, 1);
+        setTravels(newTravels);
+      } else {
+        alert("error" + response.message);
+        console.log("error", response.message);
+      }
+    } catch (err) {}
+  };
+
   const handleAddSubmit = (e) => {
     e.preventDefault();
-    const newTravel = {
-      id: travels.length,
-      codigo: addTravelData.codigo,
-      origen: addTravelData.origen,
-      destino: addTravelData.destino,
-      nro_plazas: addTravelData.nro_plazas,
-      precio: addTravelData.precio,
-    };
 
-    const newTravels = [...travels, newTravel];
-    setTravels(newTravels);
+    /*----------------------------------------
+      Se debe validar los datos introducidos 
+    ----------------------------------------*/
+
+    /*---------------------------------------------------
+      Se ingresa en la base de datos el nuevo registros 
+    ----------------------------------------------------*/
+
+    InsertTravel(addTravelData);
   };
+
   const handleEditSubmit = (e) => {
     e.preventDefault();
 
-    const editedTravel = {
-      id: editTravelData.id,
-      codigo: editTravelData.codigo,
-      origen: editTravelData.origen,
-      destino: editTravelData.destino,
-      nro_plazas: editTravelData.nro_plazas,
-      precio: editTravelData.precio,
-    };
+    /*----------------------------------------
+      Se debe validar los datos introducidos 
+    ----------------------------------------*/
 
-    const newTravels = [...travels];
+    /*---------------------------------------------------
+      Se actualiza el viaje en la base de datos 
+    ----------------------------------------------------*/
 
-    const index = travels.findIndex((travel) => travel.codigo === editTravelId);
-
-    newTravels[index] = editedTravel;
-
-    setTravels(newTravels);
-    setEditTravelId(null);
+    EditTravel(editTravelData);
   };
 
   const handleUpdate = (e, travel) => {
     e.preventDefault();
-    setEditTravelId(travel.codigo);
+    setEditTravelId(travel.id);
 
     const formValues = {
-      codigo: travel.codigo,
+      id: travel.id,
+      cod_viaje: travel.cod_viaje,
       origen: travel.origen,
       destino: travel.destino,
       nro_plazas: travel.nro_plazas,
@@ -115,15 +174,7 @@ const Travels = () => {
       `Esta seguro de eliminar el viaje ${travelId} ?`
     );
     if (confirmation) {
-      console.log(confirmation);
-
-      const newTravels = [...travels];
-
-      const index = travels.findIndex((travel) => travel.codigo === travelId);
-
-      newTravels.splice(index, 1);
-
-      setTravels(newTravels);
+      DeleteTravel(travelId);
     }
   };
 
@@ -142,17 +193,18 @@ const Travels = () => {
               onSubmit={handleAddSubmit}
             /> */}
             <tr className={styles.tableRow}>
-              <td className={styles.tableCell} data-col-title="Codigo">
+              <td className={styles.tableCell} data-col-title="id">
+                <input name="id" disabled />
+              </td>
+              <td className={styles.tableCell} data-col-title="cod_viaje">
                 <input
-                  type="text"
-                  name="codigo"
-                  placeholder=" Enter Codigo"
+                  name="cod_viaje"
+                  placeholder=" Enter codigo del viaje"
                   onChange={handleAddChange}
                 />
               </td>
               <td className={styles.tableCell} data-col-title="Origen">
                 <input
-                  type="text"
                   name="origen"
                   placeholder=" Enter Origen"
                   onChange={handleAddChange}
@@ -160,7 +212,6 @@ const Travels = () => {
               </td>
               <td className={styles.tableCell} data-col-title="Destino">
                 <input
-                  type="text"
                   name="destino"
                   placeholder=" Enter Destino"
                   onChange={handleAddChange}
@@ -169,7 +220,6 @@ const Travels = () => {
 
               <td className={styles.tableCell} data-col-title="Nro. Plazas">
                 <input
-                  type="text"
                   name="nro_plazas"
                   placeholder=" Enter Nro. Plazas"
                   onChange={handleAddChange}
@@ -178,7 +228,6 @@ const Travels = () => {
 
               <td className={styles.tableCell} data-col-title="Precio">
                 <input
-                  type="text"
                   name="precio"
                   placeholder=" Enter Precio"
                   onChange={handleAddChange}
@@ -206,9 +255,9 @@ const Travels = () => {
             {travels.map((travel) => {
               return (
                 <>
-                  {editTravelId === travel.codigo ? (
+                  {editTravelId === travel.id ? (
                     <TreavelRowUpdate
-                      key={travel.codigo}
+                      key={travel.id}
                       travel={editTravelData}
                       handleEditChange={handleEditChange}
                       handleEditSubmit={handleEditSubmit}
@@ -216,7 +265,7 @@ const Travels = () => {
                     />
                   ) : (
                     <TreavelRowRO
-                      key={travel.codigo}
+                      key={travel.id}
                       travel={travel}
                       handleUpdate={handleUpdate}
                       handleDelete={handleDelete}
@@ -235,11 +284,16 @@ const Travels = () => {
 export default Travels;
 
 // Fetch data at build time
-// export const getStaticProps = async () => {
-//   //   const posts = (await getTravles()) || [];
-//   const travels = [];
+export const getStaticProps = async () => {
+  const URL = "http://localhost:3500/travels/";
 
-//   return {
-//     props: { travels },
-//   };
-// };
+  const response = await fetch(URL, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+  const datos = await response.json();
+
+  return {
+    props: { travelData: datos.data },
+  };
+};

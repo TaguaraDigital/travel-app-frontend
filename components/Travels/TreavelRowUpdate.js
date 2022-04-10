@@ -10,12 +10,14 @@ const TreavelRowUpdate = ({
 }) => {
   return (
     <tr className={styles.tableRow}>
+      <td className={styles.tableCell} data-col-title="Identificador">
+        <input name="id" value={travel.id} />
+      </td>
       <td className={styles.tableCell} data-col-title="Codigo">
-        <input type="text" name="codigo" value={travel.codigo} disabled />
+        <input name="cod_viaje" value={travel.cod_viaje} />
       </td>
       <td className={styles.tableCell} data-col-title="Origen">
         <input
-          type="text"
           required
           name="origen"
           value={travel.origen}
@@ -24,7 +26,6 @@ const TreavelRowUpdate = ({
       </td>
       <td className={styles.tableCell} data-col-title="Destino">
         <input
-          type="text"
           required
           name="destino"
           value={travel.destino}
@@ -35,7 +36,6 @@ const TreavelRowUpdate = ({
 
       <td className={styles.tableCell} data-col-title="Nro. Plazas">
         <input
-          type="text"
           required
           name="nro_plazas"
           value={travel.nro_plazas}

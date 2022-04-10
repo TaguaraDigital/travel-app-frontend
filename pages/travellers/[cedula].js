@@ -29,7 +29,6 @@ const ViewTraveler = () => {
     fetchData(cedula);
   }, [cedula]);
 
-  console.log(current);
   return (
     <section className={styles.viewTravelerSection}>
       <h2 className={styles.viewTravelerTitle}>Detalles del Viajero</h2>
