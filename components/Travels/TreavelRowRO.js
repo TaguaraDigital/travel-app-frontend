@@ -29,7 +29,7 @@ const TreavelRowRO = ({ travel, handleUpdate, handleDelete }) => {
         className={`${styles.tableCell} ${styles.tableAccion} `}
         data-col-title="Accion"
       >
-        <div className={styles.tableAccionButtons}>
+        <div className={styles.tableAccionButtons} data-col-title="Accion">
           <button
             className={styles.tableAccion__update}
             type="button"

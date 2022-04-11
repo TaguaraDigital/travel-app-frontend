@@ -65,6 +65,7 @@
     border-radius: 10px;
     border: 1px solid transparent;
     transition: all 0.3s ease-out;
+
     &:hover {
       color: var(--mainClr);
       background-color: white;
@@ -80,11 +81,13 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 1rem;
+  display: flex;
 
   label {
     font-size: 18px;
     display: block;
     font-weight: bold;
+    width: 220px;
   }
 
   input {

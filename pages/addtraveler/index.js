@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import styles from "./addTraveler.module.scss";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
+import TravelList from "../../components/Travels/TravelList";
 
 // import { getPosts } from "../services";
 
@@ -29,7 +30,8 @@ const AddTraveler = () => {
   });
 
   const onSubmit = (values, { resetForm }) => {
-    RegisterUser(values);
+    alert("actualizar usuario");
+    // RegisterUser(values);
   };
 
   return (
@@ -43,21 +45,22 @@ const AddTraveler = () => {
           </button>
         </Link>
       </div>
+      {/* Ingresar Datos basicos del viajero */}
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.formField}>
-          <label>Cedula :</label>
+          <label>Cedula:</label>
           <input {...register("cedula")} placeholder="Cedula" />
           <p className="error">{errors?.cedula?.message}</p>
         </div>
 
         <div className={styles.formField}>
-          <label>Nombre :</label>
+          <label>Nombre:</label>
           <input {...register("user_name")} placeholder="Name" />
           <p className="error">{errors?.user_name?.message}</p>
         </div>
 
         <div className={styles.formField}>
-          <label>Fecha de Nacimineto :</label>
+          <label>Fecha Nacimiento :</label>
           <input
             {...register("fecha_nacimiento")}
             placeholder="Fecha de Nacimiento"
@@ -67,13 +70,16 @@ const AddTraveler = () => {
         </div>
 
         <div className={styles.formField}>
-          <label>Telefono :</label>
+          <label>Telefono:</label>
           <input {...register("telefono")} placeholder="Telefono" />
           <p className="error">{errors?.telefono?.message}</p>
         </div>
 
+        <TravelList />
+
         <button type="submit"> Agregar Viajero </button>
       </form>
+      {/* Ingresar Datos de los viajes */}
     </section>
   );
 };

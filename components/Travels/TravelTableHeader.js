@@ -1,6 +1,6 @@
 import styles from "../../pages/travels/Travel.module.scss";
 
-const TraveTableHeader = () => {
+const TravelTableHeader = () => {
   return (
     <thead className={styles.tableHead}>
       <tr className={styles.tableRow}>
@@ -16,4 +16,4 @@ const TraveTableHeader = () => {
   );
 };
 
-export default TraveTableHeader;
+export default TravelTableHeader;

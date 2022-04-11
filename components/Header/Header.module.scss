@@ -48,26 +48,6 @@
   cursor: pointer;
 }
 
-.cart {
-  position: relative;
-}
-
-.counter {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: var(--whiteClr);
-  padding: 3px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: var(--mainClr);
-}
-
 @media screen and (max-width: 480px) {
   .item {
     &:nth-child(2) {

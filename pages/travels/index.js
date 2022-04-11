@@ -7,7 +7,7 @@ import { FaPlus, FaPencilAlt, FaTrash } from "react-icons/fa";
 import styles from "./Travel.module.scss";
 import TreavelRowRO from "../../components/Travels/TreavelRowRO";
 import TreavelRowUpdate from "../../components/Travels/TreavelRowUpdate";
-import TraveTableHeader from "../../components/Travels/TraveTableHeader";
+import TravelTableHeader from "../../components/Travels/TravelTableHeader";
 import TravelFinder from "../../services/apis/travelsFinder";
 
 const Travels = ({ travelData }) => {
@@ -190,12 +190,12 @@ const Travels = ({ travelData }) => {
   };
 
   return (
-    <section>
+    <section className={styles.section}>
       <h1 className={styles.title}> Listado de Viajes</h1>
       {/* Add a new travel */}
       <form className={styles.form} onSubmit={handleAddSubmit}>
         <table className={styles.table}>
-          <TraveTableHeader />
+          <TravelTableHeader />
           <tbody>
             <TreavelRowUpdate
               accion="ADD"
@@ -211,7 +211,7 @@ const Travels = ({ travelData }) => {
       {/* Show and Update travles */}
       <form className={styles.form} onSubmit={handleEditSubmit}>
         <table className={styles.table}>
-          <TraveTableHeader />
+          <TravelTableHeader />
           <tbody>
             {travels.map((travel) => {
               return (

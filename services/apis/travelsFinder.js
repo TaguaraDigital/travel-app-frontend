@@ -1,6 +1,14 @@
 const TravelFinder = {};
 const URL = "http://localhost:3500/travels/";
 
+TravelFinder.getAll = async (travel) => {
+  const response = await fetch(URL, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+  return await response.json();
+};
+
 TravelFinder.create = async (travel) => {
   const response = await fetch(URL, {
     method: "POST",
