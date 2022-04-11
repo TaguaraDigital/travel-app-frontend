@@ -1,12 +1,15 @@
 import { useEffect, useContext, useState } from "react";
 import TravelFinder from "../../services/apis/travelsFinder";
 import TravelTableHeader from "./TravelTableHeader";
-import TreavelRowRO from "./TreavelRowRO";
+import TreavelRowSelect from "./TreavelRowSelect";
 import styles from "../../pages/travels/Travel.module.scss";
+import { Store } from "../../utils/store";
 
 const TravelList = () => {
   const [travelList, setTravelList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const { travelOfTraveler, setTravelOfTraveler } = useContext(Store);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,8 +17,15 @@ const TravelList = () => {
 
       try {
         const response = await TravelFinder.getAll();
-        console.log(response.data);
-        setTravelList(response.data);
+
+        const newListTravel = response.data.map((travel) => {
+          return {
+            ...travel,
+            selected: false,
+          };
+        });
+
+        setTravelList(newListTravel);
         setIsLoading(false);
       } catch (err) {
         console.log(err);
@@ -25,44 +35,22 @@ const TravelList = () => {
     fetchData();
   }, []);
 
-  const ConfirmInvoices = async (invoices) => {
-    try {
-      const response = await InvoicesFinder.confirm(invoices);
+  const handleSelect = (e, travel) => {
+    const newStatus = !travel.selected;
+    const newTravels = [...travelList];
 
-      if (response.success) {
-        toast.success("Pago confirmado exitosamente", {
-          duration: 5000,
-          position: "top-center",
-        });
-      } else {
-        // alert("Error");
-        console.log("error", response.message);
-      }
-    } catch (err) {}
-  };
+    const index = newTravels.findIndex(
+      (newTravel) => newTravel.id === travel.id
+    );
+    newTravels[index].selected = newStatus;
 
-  const handlerConfirm = (e) => {
-    e.preventDefault();
+    setTravelList(newTravels);
 
-    ConfirmInvoices(invoices.filter((invoice) => invoice.status === 3));
-
-    setInvoices(invoices.filter((invoice) => invoice.status !== 3));
-    setTotalInvoiceToConfirm(0);
-  };
-
-  const handleCheckBox = (e, id) => {
-    console.log(e.target.checked, " id ", id, invoices);
-
-    setTotalInvoiceToConfirm(0);
-    invoices.map((invoice) => {
-      if (id === invoice._id) {
-        invoice.status = e.target.checked ? 3 : 0;
-      }
-      if (invoice.status === 3) {
-        setTotalInvoiceToConfirm((pre) => pre + 1);
-      }
-      return totalInvoiceToConfirm;
+    const viajesDelViajero = newTravels.filter((travel, index) => {
+      return travel.selected;
     });
+
+    setTravelOfTraveler(viajesDelViajero);
   };
 
   return (
@@ -77,7 +65,13 @@ const TravelList = () => {
               {travelList &&
                 travelList.length > 0 &&
                 travelList.map((travel, i) => {
-                  return <TreavelRowRO key={travel.id} travel={travel} />;
+                  return (
+                    <TreavelRowSelect
+                      key={travel.id}
+                      travel={travel}
+                      handleSelect={handleSelect}
+                    />
+                  );
                 })}
             </tbody>
           </table>

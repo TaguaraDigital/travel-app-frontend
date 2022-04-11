@@ -58,7 +58,6 @@ const Travels = ({ travelData }) => {
     try {
       const response = await TravelFinder.create(travel);
       if (response.success) {
-        console.log(response);
         const newTravel = {
           id: response.data.id,
           cod_viaje: addTravelData.cod_viaje,

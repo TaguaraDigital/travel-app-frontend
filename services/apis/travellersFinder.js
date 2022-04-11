@@ -1,8 +1,8 @@
-const TravelFinder = {};
-// const URL = "https://travel-app-backend.vercel.app/travels/";
-const URL = "http://localhost:3500/travels/";
+const TravellersFinder = {};
+// const URL = "https://travel-app-backend.vercel.app/travellers/";
+const URL = "http://localhost:3500/travellers/";
 
-TravelFinder.getAll = async (travel) => {
+TravellersFinder.getAll = async () => {
   const response = await fetch(URL, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
@@ -10,30 +10,30 @@ TravelFinder.getAll = async (travel) => {
   return await response.json();
 };
 
-TravelFinder.create = async (travel) => {
+TravellersFinder.create = async (traveler) => {
   const response = await fetch(URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...travel }),
+    body: JSON.stringify({ ...traveler }),
   });
   return await response.json();
 };
 
-TravelFinder.update = async (travel) => {
+TravellersFinder.update = async (traveler) => {
   const response = await fetch(URL, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...travel }),
+    body: JSON.stringify({ ...traveler }),
   });
   return await response.json();
 };
 
-TravelFinder.delete = async (travel) => {
-  const response = await fetch(URL + travel, {
+TravellersFinder.delete = async (traveler) => {
+  const response = await fetch(URL + traveler, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
   });
   return await response.json();
 };
 
-export default TravelFinder;
+export default TravellersFinder;

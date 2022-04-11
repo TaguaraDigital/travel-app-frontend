@@ -1,17 +1,20 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Store } from "../../utils/store";
+import moment from "moment";
 
-// import { userValidationSchema as schema } from "../../services/utils/registerValidation";
+import { travelerValidation as schema } from "../../services/utils/travelerValidation";
 
 import styles from "./addTraveler.module.scss";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 import TravelList from "../../components/Travels/TravelList";
-
-// import { getPosts } from "../services";
+import TravellersFinder from "../../services/apis/travellersFinder";
 
 const AddTraveler = () => {
+  const { travelOfTraveler } = useContext(Store);
+
   const intialValues = {
     cedula: "",
     nombre: "",
@@ -22,16 +25,35 @@ const AddTraveler = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm({
     defaultValues: intialValues,
-    mode: "onBlur",
-    // resolver: yupResolver(schema),
+    resolver: yupResolver(schema),
+    mode: "onSubmit",
   });
 
-  const onSubmit = (values, { resetForm }) => {
-    alert("actualizar usuario");
-    // RegisterUser(values);
+  const InsertTraveler = async (traveler) => {
+    try {
+      const response = await TravellersFinder.create(traveler);
+      console.log(response);
+      if (response.success) {
+        alert("VIAJERO CREADO EXITOSAMENTE");
+      } else {
+        console.log("error", response.message);
+        alert("error" + response.message);
+      }
+    } catch (err) {}
+  };
+
+  const onSubmit = (values) => {
+    const newTraveler = {};
+
+    values.fecha_nacimiento = moment(values.fecha_nacimiento).format(
+      "YYYY-MM-DD"
+    );
+    newTraveler["viajero"] = { ...values };
+    newTraveler["viajes"] = [...travelOfTraveler];
+    InsertTraveler(newTraveler);
   };
 
   return (
@@ -47,39 +69,40 @@ const AddTraveler = () => {
       </div>
       {/* Ingresar Datos basicos del viajero */}
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.formField}>
-          <label>Cedula:</label>
-          <input {...register("cedula")} placeholder="Cedula" />
-          <p className="error">{errors?.cedula?.message}</p>
-        </div>
+        <div className={styles.groupField}>
+          <div className={styles.formField}>
+            <label>Cedula:</label>
+            <input {...register("cedula")} placeholder="Cedula" />
+            <p className={styles.error}>{errors?.cedula?.message}</p>
+          </div>
 
-        <div className={styles.formField}>
-          <label>Nombre:</label>
-          <input {...register("user_name")} placeholder="Name" />
-          <p className="error">{errors?.user_name?.message}</p>
-        </div>
+          <div className={styles.formField}>
+            <label>Nombre:</label>
+            <input {...register("nombre")} placeholder="Nombre" />
+            <p className={styles.error}>{errors?.nombre?.message}</p>
+          </div>
 
-        <div className={styles.formField}>
-          <label>Fecha Nacimiento :</label>
-          <input
-            {...register("fecha_nacimiento")}
-            placeholder="Fecha de Nacimiento"
-            type="date"
-          />
-          <p className="error">{errors?.fecha_nacimiento?.message}</p>
-        </div>
+          <div className={styles.formField}>
+            <label>Fecha Nacimiento :</label>
+            <input
+              {...register("fecha_nacimiento")}
+              placeholder="Fecha de Nacimiento"
+              type="date"
+            />
+            <p className={styles.error}>{errors?.fecha_nacimiento?.message}</p>
+          </div>
 
-        <div className={styles.formField}>
-          <label>Telefono:</label>
-          <input {...register("telefono")} placeholder="Telefono" />
-          <p className="error">{errors?.telefono?.message}</p>
+          <div className={styles.formField}>
+            <label>Telefono:</label>
+            <input {...register("telefono")} placeholder="Telefono" />
+            <p className={styles.error}>{errors?.telefono?.message}</p>
+          </div>
         </div>
 
         <TravelList />
 
         <button type="submit"> Agregar Viajero </button>
       </form>
-      {/* Ingresar Datos de los viajes */}
     </section>
   );
 };

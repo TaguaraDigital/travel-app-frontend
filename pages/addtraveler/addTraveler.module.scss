@@ -1,7 +1,7 @@
 .addTravelerSection {
   width: 100%;
   height: 100%;
-  padding: 2rem;
+  padding: 1rem;
   background-color: var(--whiteClr);
   position: relative;
 }
@@ -51,7 +51,7 @@
 }
 
 .form {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -74,25 +74,33 @@
   }
 }
 
-.formField {
-  width: 100%;
-  position: relative;
-  padding: 0 1rem;
+.groupField {
+  margin-top: 2rem;
   margin-left: auto;
   margin-right: auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.formField {
+  width: 45%;
+  position: relative;
+  padding: 0 1rem;
   margin-bottom: 1rem;
   display: flex;
+  flex-direction: column;
 
   label {
-    font-size: 18px;
     display: block;
     font-weight: bold;
-    width: 220px;
+    width: 200px;
   }
 
   input {
     width: 100%;
-    height: 2.5rem;
+    height: 2rem;
     margin-bottom: 0;
     padding: 0 1rem;
 
@@ -100,9 +108,6 @@
     border: 1px solid rgba(200, 200, 200, 0.3);
     border-radius: 5px;
     border-bottom: 2px solid transparent;
-
-    box-shadow: none;
-
     transition: all 0.5s ease-in-out;
 
     &::placeholder {
@@ -115,7 +120,13 @@
 
     &:focus {
       outline: none;
-      border-bottom: 2px solid var(--saintBlue);
+      border-bottom: 2px solid var(--mainClr);
     }
   }
+}
+
+.error {
+  margin: 0;
+  color: red;
+  font-size: 12px;
 }
