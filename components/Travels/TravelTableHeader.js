@@ -4,13 +4,13 @@ const TravelTableHeader = () => {
   return (
     <thead className={styles.tableHead}>
       <tr className={styles.tableRow}>
-        <th> Identificador </th>
-        <th> Codigo </th>
-        <th> Origen </th>
-        <th> Destino </th>
-        <th> Nro. Plazas </th>
-        <th> Precios </th>
-        <th> Accion </th>
+        <th className={styles.tableCell}> Id </th>
+        <th className={styles.tableCell}> Codigo </th>
+        <th className={styles.tableCell}> Origen </th>
+        <th className={styles.tableCell}> Destino </th>
+        <th className={styles.tableCell}> Nro. Plazas </th>
+        <th className={styles.tableCell}> Precios </th>
+        <th className={styles.tableCell}> Accion </th>
       </tr>
     </thead>
   );
