@@ -169,6 +169,17 @@ const Travels = ({ travelData }) => {
     setEditTravelId(null);
   };
 
+  const handleReset = () => {
+    setAddTravelData({
+      id: "",
+      cod_viaje: "",
+      origen: "",
+      destino: "",
+      nro_plazas: "",
+      precio: "",
+    });
+  };
+
   const handleDelete = (travelId) => {
     const confirmation = confirm(
       `Esta seguro de eliminar el viaje ${travelId} ?`
@@ -186,63 +197,13 @@ const Travels = ({ travelData }) => {
         <table className={styles.table}>
           <TraveTableHeader />
           <tbody>
-            {/* <TreavelRowUpdate
+            <TreavelRowUpdate
               accion="ADD"
               travel={addTravelData}
-              onChange={handleAddChange}
-              onSubmit={handleAddSubmit}
-            /> */}
-            <tr className={styles.tableRow}>
-              <td className={styles.tableCell} data-col-title="id">
-                <input name="id" disabled />
-              </td>
-              <td className={styles.tableCell} data-col-title="cod_viaje">
-                <input
-                  name="cod_viaje"
-                  placeholder=" Enter codigo del viaje"
-                  onChange={handleAddChange}
-                />
-              </td>
-              <td className={styles.tableCell} data-col-title="Origen">
-                <input
-                  name="origen"
-                  placeholder=" Enter Origen"
-                  onChange={handleAddChange}
-                />
-              </td>
-              <td className={styles.tableCell} data-col-title="Destino">
-                <input
-                  name="destino"
-                  placeholder=" Enter Destino"
-                  onChange={handleAddChange}
-                />
-              </td>
-
-              <td className={styles.tableCell} data-col-title="Nro. Plazas">
-                <input
-                  name="nro_plazas"
-                  placeholder=" Enter Nro. Plazas"
-                  onChange={handleAddChange}
-                />
-              </td>
-
-              <td className={styles.tableCell} data-col-title="Precio">
-                <input
-                  name="precio"
-                  placeholder=" Enter Precio"
-                  onChange={handleAddChange}
-                />
-              </td>
-
-              <td
-                className={`${styles.tableCell} ${styles.tableAccion}`}
-                data-col-title="Accion"
-              >
-                <button type="submit" className={styles.tableAccion__update}>
-                  <FaPlus />
-                </button>
-              </td>
-            </tr>
+              handleEditChange={handleAddChange}
+              handleEditSubmit={handleAddSubmit}
+              handleCancel={handleReset}
+            />
           </tbody>
         </table>
       </form>
@@ -258,6 +219,7 @@ const Travels = ({ travelData }) => {
                   {editTravelId === travel.id ? (
                     <TreavelRowUpdate
                       key={travel.id}
+                      accion="UPDATE"
                       travel={editTravelData}
                       handleEditChange={handleEditChange}
                       handleEditSubmit={handleEditSubmit}

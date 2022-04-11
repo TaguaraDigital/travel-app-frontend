@@ -4,7 +4,7 @@ import { FaPencilAlt, FaTrash } from "react-icons/fa";
 const TreavelRowRO = ({ travel, handleUpdate, handleDelete }) => {
   return (
     <tr className={styles.tableRow}>
-      <td className={styles.tableCell} data-col-title="id">
+      <td className={styles.tableCell} data-col-title="Identificador">
         {travel.id}
       </td>
       <td className={styles.tableCell} data-col-title="Codigo">
@@ -17,7 +17,7 @@ const TreavelRowRO = ({ travel, handleUpdate, handleDelete }) => {
         {travel.destino}
       </td>
 
-      <td className={styles.tableCell} data-col-title="Nro. Plazas">
+      <td className={styles.tableCell} data-col-title="Nro.Plazas">
         {travel.nro_plazas}
       </td>
 

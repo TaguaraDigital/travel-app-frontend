@@ -1,8 +1,9 @@
 import { useState } from "react";
 import styles from "../../pages/travels/Travel.module.scss";
-import { FaCheck, FaBan } from "react-icons/fa";
+import { FaPlus, FaCheck, FaBan } from "react-icons/fa";
 
 const TreavelRowUpdate = ({
+  accion,
   travel,
   handleEditChange,
   handleEditSubmit,
@@ -14,7 +15,11 @@ const TreavelRowUpdate = ({
         <input name="id" value={travel.id} />
       </td>
       <td className={styles.tableCell} data-col-title="Codigo">
-        <input name="cod_viaje" value={travel.cod_viaje} />
+        <input
+          name="cod_viaje"
+          value={travel.cod_viaje}
+          onChange={handleEditChange}
+        />
       </td>
       <td className={styles.tableCell} data-col-title="Origen">
         <input
@@ -65,7 +70,7 @@ const TreavelRowUpdate = ({
             onClick={handleEditSubmit}
             className={styles.tableAccion__update}
           >
-            <FaCheck />
+            {accion === "ADD" ? <FaPlus /> : <FaCheck />}
           </button>
           <button
             type="submit"
