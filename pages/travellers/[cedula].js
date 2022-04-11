@@ -14,15 +14,9 @@ const ViewTraveler = () => {
   const [current, setCurrent] = useState({});
 
   const fetchData = async (cedula) => {
-    const URL = `http://localhost:3500/travellers/${cedula}`;
-
-    const response = await fetch(URL, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    const datos = await response.json();
-    setCurrent(datos.data[0]);
-    return datos;
+    const response = await TravellersFinder.byId(cedula);
+    setCurrent(response.data[0]);
+    return;
   };
 
   useEffect(() => {

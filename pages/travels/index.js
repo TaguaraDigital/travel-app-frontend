@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 
@@ -10,8 +10,23 @@ import TreavelRowUpdate from "../../components/Travels/TreavelRowUpdate";
 import TravelTableHeader from "../../components/Travels/TravelTableHeader";
 import TravelFinder from "../../services/apis/travelsFinder";
 
-const Travels = ({ travelData }) => {
-  const [travels, setTravels] = useState(travelData);
+const Travels = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getTravelsData = async () => {
+    const response = await TravelFinder.getAll();
+    console.log(response);
+    setTravels(response.data);
+    setIsLoading(true);
+    return response;
+  };
+
+  useEffect(() => {
+    getTravelsData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const [travels, setTravels] = useState([]);
   const [editTravelId, setEditTravelId] = useState(null);
 
   const [addTravelData, setAddTravelData] = useState({
@@ -211,31 +226,33 @@ const Travels = ({ travelData }) => {
       <form className={styles.form} onSubmit={handleEditSubmit}>
         <table className={styles.table}>
           <TravelTableHeader />
-          <tbody>
-            {travels.map((travel) => {
-              return (
-                <>
-                  {editTravelId === travel.id ? (
-                    <TreavelRowUpdate
-                      key={travel.id}
-                      accion="UPDATE"
-                      travel={editTravelData}
-                      handleEditChange={handleEditChange}
-                      handleEditSubmit={handleEditSubmit}
-                      handleCancel={handleCancel}
-                    />
-                  ) : (
-                    <TreavelRowRO
-                      key={travel.id}
-                      travel={travel}
-                      handleUpdate={handleUpdate}
-                      handleDelete={handleDelete}
-                    />
-                  )}
-                </>
-              );
-            })}
-          </tbody>
+          {isLoading && (
+            <tbody>
+              {travels.map((travel) => {
+                return (
+                  <>
+                    {editTravelId === travel.id ? (
+                      <TreavelRowUpdate
+                        key={travel.id}
+                        accion="UPDATE"
+                        travel={editTravelData}
+                        handleEditChange={handleEditChange}
+                        handleEditSubmit={handleEditSubmit}
+                        handleCancel={handleCancel}
+                      />
+                    ) : (
+                      <TreavelRowRO
+                        key={travel.id}
+                        travel={travel}
+                        handleUpdate={handleUpdate}
+                        handleDelete={handleDelete}
+                      />
+                    )}
+                  </>
+                );
+              })}
+            </tbody>
+          )}
         </table>
       </form>
     </section>
@@ -243,18 +260,3 @@ const Travels = ({ travelData }) => {
 };
 
 export default Travels;
-
-// Fetch data at build time
-export const getStaticProps = async () => {
-  const URL = "http://localhost:3500/travels/";
-
-  const response = await fetch(URL, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
-  const datos = await response.json();
-
-  return {
-    props: { travelData: datos.data },
-  };
-};

@@ -1,8 +1,8 @@
 const TravelFinder = {};
-// const URL = "https://travel-app-backend.vercel.app/travels/";
-const URL = "http://localhost:3500/travels/";
+const URL = "https://travel-app-backend.vercel.app/travels/";
+// const URL = "http://localhost:3500/travels/";
 
-TravelFinder.getAll = async (travel) => {
+TravelFinder.getAll = async () => {
   const response = await fetch(URL, {
     method: "GET",
     headers: { "Content-Type": "application/json" },

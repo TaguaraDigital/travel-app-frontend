@@ -1,17 +1,28 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Store } from "../../utils/store";
 
 import Link from "next/link";
 
 import TravellersList from "../../components/TravellersList";
+import TravellersFinder from "../../services/apis/travellersFinder";
 import styles from "./Travellers.module.scss";
 import { FaUser } from "react-icons/fa";
 
-const Travellers = ({ travellers }) => {
-  const { setTravellers } = useContext(Store);
+const Travellers = () => {
+  const { travellers, setTravellers } = useContext(Store);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getTravellersData = async () => {
+    const response = await TravellersFinder.getAll();
+    console.log(response);
+    setTravellers(response.data);
+    setIsLoading(true);
+    return response;
+  };
 
   useEffect(() => {
-    setTravellers(travellers);
+    getTravellersData();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -26,24 +37,10 @@ const Travellers = ({ travellers }) => {
           </button>
         </Link>
       </div>
-      <TravellersList travellers={travellers} />
+      {!isLoading && <h1> Buscando datos</h1>}
+      {isLoading && <TravellersList travellers={travellers} />}
     </section>
   );
 };
 
 export default Travellers;
-
-// Fetch data at build time
-export const getStaticProps = async () => {
-  const URL = "http://localhost:3500/travellers/";
-
-  const response = await fetch(URL, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
-  const datos = await response.json();
-
-  return {
-    props: { travellers: datos.data },
-  };
-};
